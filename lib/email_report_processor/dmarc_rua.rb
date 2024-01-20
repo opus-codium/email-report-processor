@@ -8,10 +8,11 @@ require 'json'
 
 module EmailReportProcessor
   class DmarcRua < Base
-    # rubocop:disable Metrics/AbcSize
-    def report(raw_report)
-      uri = URI('https://admin:admin@localhost:9200/dmarc-reports/_doc')
+    def initialize
+      super(URI('https://admin:admin@localhost:9200/dmarc-reports/_doc'))
+    end
 
+    def report(raw_report)
       report = Hash.from_xml(raw_report)
 
       report['feedback']['record'] = [report['feedback']['record']] unless report['feedback']['record'].is_a?(Array)
@@ -19,9 +20,8 @@ module EmailReportProcessor
       report['feedback']['record'].each do |record|
         report['feedback']['record'] = record.to_h
 
-        send_report(uri, report.to_json)
+        send_report(report.to_json)
       end
     end
-    # rubocop:enable Metrics/AbcSize
   end
 end

@@ -6,15 +6,17 @@ require 'json'
 
 module EmailReportProcessor
   class TlsrptRua < Base
-    def report(raw_report)
-      uri = URI('https://admin:admin@localhost:9200/tls-reports/_doc')
+    def initialize
+      super(URI('https://admin:admin@localhost:9200/tls-reports/_doc'))
+    end
 
+    def report(raw_report)
       report = JSON.parse(raw_report)
 
       report['policies'].each do |policy|
         report['policies'] = policy
 
-        send_report(uri, report.to_json)
+        send_report(report.to_json)
       end
     end
   end
