@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'email_report_processor'
+
+require 'optparse'
+
+options = {
+  class: nil,
+  mbox:  false,
+}
+
+OptionParser.new do |opts|
+  opts.on('--dmarc') do
+    options[:class] = EmailReportProcessor::DmarcRua
+  end
+  opts.on('--tlsrpt') do
+    options[:class] = EmailReportProcessor::TlsrptRua
+  end
+  opts.on('--mbox') do
+    options[:mbox] = true
+  end
+end.parse!
+
+if options[:class].nil?
+  warn('A processor type must be passed')
+  exit 1
+end
+
+processor = options[:class].new
+
+if ARGV.empty?
+  mail = Mail.new($stdin.read)
+  processor.process_message(mail)
+else
+  ARGV.each do |filename|
+    if options[:mbox]
+      m = EmailReportProcessor::MailBox.new(filename)
+
+      while (message = m.next_message)
+        mail = Mail.new(message)
+        processor.process_message(mail)
+      end
+    else
+      mail = Mail.new(File.read(filename))
+      processor.process_message(mail)
+    end
+  end
+end
