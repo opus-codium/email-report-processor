@@ -101,4 +101,22 @@ RSpec.configure do |config|
   # test failures related to randomization by passing the same `--seed` value
   # as the one that triggered the failure.
   Kernel.srand config.seed
+
+  config.before(:suite) do
+    server_options = {
+      Port:          9200,
+      StartCallback: -> { @started = true },
+      AccessLog:     [],
+      Logger:        WEBrick::Log.new(File.open(File::NULL, 'w')),
+      SSLEnable:     true,
+      SSLCertName:   [%w[CN localhost]],
+    }
+    @server = WEBrick::HTTPServer.new(server_options)
+    Thread.new { @server.start }
+    Timeout.timeout(1) { sleep(0.1) until @started }
+  end
+
+  config.after(:suite) do
+    @server&.shutdown
+  end
 end
