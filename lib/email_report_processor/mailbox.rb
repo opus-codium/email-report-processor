@@ -15,7 +15,7 @@ module EmailReportProcessor
       until @scanner.eos?
         if @scanner.scan(/From .*\n/)
           # Ignore
-        elsif @scanner.scan(/\nFrom /)
+        elsif @scanner.scan("\nFrom ")
           @scanner.unscan
           @scanner.getch
           return message

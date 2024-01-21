@@ -2,6 +2,7 @@
 AllCops:
   AllowSymlinksInCacheRootDirectory: true
   TargetRubyVersion: 2.6
+  NewCops: enable
 
 require:
   - rubocop-rake

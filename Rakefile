@@ -3,8 +3,10 @@
 require 'bundler/gem_tasks'
 require 'github_changelog_generator/task'
 require 'rspec/core/rake_task'
+require 'cucumber/rake/task'
 
 RSpec::Core::RakeTask.new(:spec)
+Cucumber::Rake::Task.new(:features)
 
 GitHubChangelogGenerator::RakeTask.new :changelog do |config|
   config.header = <<~HEADER.chomp
@@ -23,4 +25,6 @@ GitHubChangelogGenerator::RakeTask.new :changelog do |config|
   config.future_release = "v#{EmailReportProcessor::VERSION}"
 end
 
-task default: :spec
+task test: %i[spec features]
+
+task default: :test

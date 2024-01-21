@@ -32,8 +32,10 @@ module EmailReportProcessor
     end
 
     def process_message(mail)
-      attachement = mail.attachments.first
-      process_attachment(attachement.content_disposition, attachement.body.decoded)
+      part = mail.attachments.first || mail
+      filename = part['Content-Disposition'].filename
+
+      process_attachment(filename, part.body.decoded)
     end
 
     def process_attachment(name, content)
