@@ -1,6 +1,6 @@
 # email-report-processor
 
-A tool to submit e-mail reports into OpenSearch.
+A tool to submit e-mail reports (DMARC, SMTP TLS) into OpenSearch.
 
 > [!CAUTION]
 > This is work-in-progress, expect things to change.
@@ -18,9 +18,10 @@ echo "| email-report-processor" > ~reports/.forward
 
 Alternatively check mail headers, set filters and pipe messages using your preferred tooling.
 
-### DMARC Reporting
+### DMARC Aggregate Reports
 
-Reports SPF / DKIM results when receiving mail from your domain.
+DMARC aggregate feedback reports are defined in [RFC7489, section 7.2](https://datatracker.ietf.org/doc/html/rfc7489#section-7.2).
+They include information about SPF and DKIM check results for e-mail you send.
 
 #### Configuration
 
@@ -85,7 +86,8 @@ PUT /dmarc-reports
 
 ### SMTP TLS Reporting
 
-Reports about TLS usage when contacting your mail server.
+SMTP TLS reports are defined in [RFC8460](https://datatracker.ietf.org/doc/html/rfc8460).
+They include information about cryptography usage for mail you receive.
 
 #### Configuration
 
@@ -118,31 +120,3 @@ PUT /tls-reports
   }
 }
 ```
-
-### MTA-STS Reporting
-
-HSTS for SMTP: Indicate that a given server support Encrypted SMTP and STARTTLS MUST be used when talking to it.
-
-> [!NOTE]
-> Not supported ATM
-
-
-#### Configuration
-
-```
-_mta-sts.blogreen.org.	10800	IN	TXT	"v=STSv1; id=2019020100"
-```
-
-## References
-
-DMARC reports
-https://support.google.com/a/answer/10032472?hl=en
-
-4. Turn on MTA-STS and TLS reporting
-https://support.google.com/a/answer/9276512?hl=en
-
-SMTP MTA Strict Transport Security (MTA-STS)
-https://www.rfc-editor.org/rfc/rfc8461.txt
-
-Introducing MTA Strict Transport Security (MTA-STS)
-https://www.hardenize.com/blog/mta-sts

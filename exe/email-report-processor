@@ -11,13 +11,16 @@ options = {
 }
 
 OptionParser.new do |opts|
-  opts.on('--dmarc') do
+  opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
+  opts.separator("\nReport type selection:")
+  opts.on('--dmarc', 'Process DMARC Reports') do
     options[:class] = EmailReportProcessor::DmarcRua
   end
-  opts.on('--tlsrpt') do
+  opts.on('--tlsrpt', 'Process SMTP TLS Reports') do
     options[:class] = EmailReportProcessor::TlsrptRua
   end
-  opts.on('--mbox') do
+  opts.separator("\nMiscellaneous options:")
+  opts.on('--mbox', 'Treat the provided file as a mailbox') do
     options[:mbox] = true
   end
 end.parse!
