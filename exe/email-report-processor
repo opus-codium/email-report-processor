@@ -8,6 +8,7 @@ require 'optparse'
 options = {
   class: nil,
   mbox:  false,
+  os:    {},
 }
 
 OptionParser.new do |opts|
@@ -19,6 +20,20 @@ OptionParser.new do |opts|
   opts.on('--tlsrpt', 'Process SMTP TLS Reports') do
     options[:class] = EmailReportProcessor::TlsrptRua
   end
+  opts.separator("\nOpenSearch options:")
+  opts.on('-h', '--os-hostname=HOSTNAME', 'Hostname of the OpenSearch instance') do |hostname|
+    options[:os][:hostname] = hostname
+  end
+  opts.on('-p', '--os-port=PORT', 'Port of the OpenSearch instance') do |port|
+    options[:os][:port] = port.to_i
+  end
+  opts.on('-u', '--os-username=USERNAME', 'Username of the OpenSearch instance') do |username|
+    options[:os][:username] = username
+  end
+  opts.on('--os-password=PASSWORD', 'Password of the OpenSearch instance') do |password|
+    options[:os][:password] = password
+  end
+
   opts.separator("\nMiscellaneous options:")
   opts.on('--mbox', 'Treat the provided file as a mailbox') do
     options[:mbox] = true
@@ -30,7 +45,7 @@ if options[:class].nil?
   exit 1
 end
 
-processor = options[:class].new
+processor = options[:class].new(**options[:os])
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)

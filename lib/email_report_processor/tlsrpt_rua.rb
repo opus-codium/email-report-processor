@@ -6,8 +6,10 @@ require 'json'
 
 module EmailReportProcessor
   class TlsrptRua < Base
-    def initialize
-      super(URI('https://admin:admin@localhost:9200/tls-reports/_doc'))
+    DEFAULT_ENDPOINT = '/tlsrpt-reports'
+
+    def initialize(**options)
+      super(**options, endpoint: options[:tlsrpt_endpoint] || DEFAULT_ENDPOINT)
     end
 
     def report(raw_report)
