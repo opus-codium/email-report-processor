@@ -8,8 +8,10 @@ require 'json'
 
 module EmailReportProcessor
   class DmarcRua < Base
-    def initialize
-      super(URI('https://admin:admin@localhost:9200/dmarc-reports/_doc'))
+    DEFAULT_ENDPOINT = '/dmarc-reports'
+
+    def initialize(**options)
+      super(**options, endpoint: options[:dmarc_endpoint] || DEFAULT_ENDPOINT)
     end
 
     def report(raw_report)

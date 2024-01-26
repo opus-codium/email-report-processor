@@ -6,7 +6,7 @@ require 'webrick'
 require 'webrick/https'
 
 RSpec.describe EmailReportProcessor::Base do
-  subject(:processor) { described_class.new(URI('https://localhost:9200/')) }
+  subject(:processor) { described_class.new(endpoint: '/endpoint') }
 
   before do
     allow(processor).to receive(:report)

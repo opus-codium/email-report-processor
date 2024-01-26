@@ -8,16 +8,34 @@ require 'optparse'
 options = {
   class: nil,
   mbox:  false,
+  os:    {},
 }
 
 OptionParser.new do |opts|
-  opts.on('--dmarc') do
+  opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
+  opts.separator("\nReport type selection:")
+  opts.on('--dmarc', 'Process DMARC Reports') do
     options[:class] = EmailReportProcessor::DmarcRua
   end
-  opts.on('--tlsrpt') do
+  opts.on('--tlsrpt', 'Process SMTP TLS Reports') do
     options[:class] = EmailReportProcessor::TlsrptRua
   end
-  opts.on('--mbox') do
+  opts.separator("\nOpenSearch options:")
+  opts.on('-h', '--os-hostname=HOSTNAME', 'Hostname of the OpenSearch instance') do |hostname|
+    options[:os][:hostname] = hostname
+  end
+  opts.on('-p', '--os-port=PORT', 'Port of the OpenSearch instance') do |port|
+    options[:os][:port] = port.to_i
+  end
+  opts.on('-u', '--os-username=USERNAME', 'Username of the OpenSearch instance') do |username|
+    options[:os][:username] = username
+  end
+  opts.on('--os-password=PASSWORD', 'Password of the OpenSearch instance') do |password|
+    options[:os][:password] = password
+  end
+
+  opts.separator("\nMiscellaneous options:")
+  opts.on('--mbox', 'Treat the provided file as a mailbox') do
     options[:mbox] = true
   end
 end.parse!
@@ -27,7 +45,7 @@ if options[:class].nil?
   exit 1
 end
 
-processor = options[:class].new
+processor = options[:class].new(**options[:os])
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)

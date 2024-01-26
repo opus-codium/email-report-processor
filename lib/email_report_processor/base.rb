@@ -11,8 +11,8 @@ module EmailReportProcessor
   class Base
     attr_reader :http, :uri
 
-    def initialize(uri)
-      @uri = uri
+    def initialize(endpoint:, username: 'admin', password: 'admin', hostname: 'localhost', port: 9200)
+      @uri = URI("https://#{username}:#{password}@#{hostname}:#{port}#{endpoint}/_doc")
       @http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE)
     end
 
