@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'mail'
-require 'net/http'
 require 'stringio'
 require 'zip'
 require 'zip/filesystem'
@@ -9,26 +8,18 @@ require 'zlib'
 
 module EmailReportProcessor
   class Base
-    attr_reader :http, :uri
+    attr_reader :index_name
 
-    def initialize(endpoint:, username: 'admin', password: 'admin', hostname: 'localhost', port: 9200)
-      @uri = URI("https://#{username}:#{password}@#{hostname}:#{port}#{endpoint}/_doc")
-      @http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE)
+    def initialize(client:)
+      @client = client
     end
 
-    def report(_raw_report)
+    def report(_report)
       raise 'Should not be called. Override this method and call #send_report'
     end
 
     def send_report(report)
-      req = Net::HTTP::Post.new(uri)
-      req.body = report
-      req.content_type = 'application/json'
-      req.basic_auth(uri.user, uri.password)
-
-      res = http.request(req)
-      puts res.inspect
-      puts res.body.inspect
+      @client.index(index: index_name, body: report)
     end
 
     def process_message(mail)

@@ -8,10 +8,11 @@ require 'json'
 
 module EmailReportProcessor
   class DmarcRua < Base
-    DEFAULT_ENDPOINT = '/dmarc-reports'
+    DEFAULT_INDEX = 'dmarc-reports'
 
     def initialize(**options)
-      super(**options, endpoint: options[:dmarc_endpoint] || DEFAULT_ENDPOINT)
+      @index_name = options[:dmarc_endpoint] || DEFAULT_INDEX
+      super(client: options[:client])
     end
 
     def report(raw_report)
@@ -22,7 +23,7 @@ module EmailReportProcessor
       report['feedback']['record'].each do |record|
         report['feedback']['record'] = record.to_h
 
-        send_report(report.to_json)
+        send_report(report)
       end
     end
   end

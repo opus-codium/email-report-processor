@@ -3,13 +3,20 @@
 
 require 'email_report_processor'
 
+require 'opensearch'
+
 require 'optparse'
 
 options = {
   class:   nil,
   mbox:    false,
   maildir: false,
-  os:      {},
+  os:      {
+    hostname: 'localhost',
+    port:     9200,
+    username: 'admin',
+    password: 'admin',
+  },
 }
 
 OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
@@ -54,7 +61,14 @@ if options[:mbox] && options[:maildir]
   exit 1
 end
 
-processor = options[:class].new(**options[:os])
+client = OpenSearch::Client.new(
+  host:              "https://#{options[:os][:hostname]}:#{options[:os][:port]}",
+  user:              options[:os][:username],
+  password:          options[:os][:password],
+  transport_options: { ssl: { verify: false } },
+)
+
+processor = options[:class].new(client: client)
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)
