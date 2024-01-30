@@ -8,9 +8,9 @@ module EmailReportProcessor
   class TlsrptRua < Base
     DEFAULT_INDEX = 'tlsrpt-reports'
 
-    def initialize(**options)
-      @index_name = options[:tlsrpt_endpoint] || DEFAULT_INDEX
-      super(client: options[:client])
+    def initialize(client:, options: {})
+      @index_name = options[:tlsrpt_index] || DEFAULT_INDEX
+      super(client: client)
     end
 
     def report(raw_report)

@@ -10,9 +10,9 @@ module EmailReportProcessor
   class DmarcRua < Base
     DEFAULT_INDEX = 'dmarc-reports'
 
-    def initialize(**options)
-      @index_name = options[:dmarc_endpoint] || DEFAULT_INDEX
-      super(client: options[:client])
+    def initialize(client:, options: {})
+      @index_name = options[:dmarc_index] || DEFAULT_INDEX
+      super(client: client)
     end
 
     def report(raw_report)
