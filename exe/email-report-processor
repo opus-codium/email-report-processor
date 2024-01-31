@@ -4,6 +4,7 @@
 require 'email_report_processor'
 
 require 'opensearch'
+require 'faraday/net_http_persistent'
 
 require 'optparse'
 

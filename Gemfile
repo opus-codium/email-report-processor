@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'aruba'
+gem 'faraday-net_http_persistent'
 gem 'github_changelog_generator'
 gem 'rake'
 gem 'rspec'
