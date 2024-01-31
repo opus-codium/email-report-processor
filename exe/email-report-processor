@@ -9,7 +9,6 @@ require 'faraday/net_http_persistent'
 require 'optparse'
 
 options = {
-  class:   nil,
   mbox:    false,
   maildir: false,
   os:      {
@@ -42,15 +41,8 @@ class Progress
   end
 end
 
-OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
+OptionParser.new do |opts|
   opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
-  opts.separator("\nReport type selection:")
-  opts.on('-d', '--dmarc', 'Process DMARC Reports') do
-    options[:class] = EmailReportProcessor::DmarcRua
-  end
-  opts.on('-t', '--tlsrpt', 'Process SMTP TLS Reports') do
-    options[:class] = EmailReportProcessor::TlsrptRua
-  end
 
   opts.separator("\nOpenSearch options:")
   opts.on('-h', '--os-host=HOSTNAME', 'Hostname of the OpenSearch instance') do |host|
@@ -78,11 +70,6 @@ OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
   end
 end.parse!
 
-if options[:class].nil?
-  warn('A processor type must be passed')
-  exit 1
-end
-
 if options[:mbox] && options[:maildir]
   warn('The --mbox and --maildir options are mutualy exclusive')
   exit 1
@@ -95,7 +82,7 @@ client = OpenSearch::Client.new(
   transport_options: { ssl: { verify: false } },
 )
 
-processor = options[:class].new(client: client, options: options)
+processor = ReportProcessor.new(client: client, options: options)
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)
