@@ -1,4 +1,3 @@
-From SRS0=pMZs=57=smtp-tls-reporting.bounces.google.com=3Nd3cYxoKAIgz03q1xA-4y51-5x4-3q1035uzss00sxq.o0y@blogreen.org Fri Feb  3 12:09:04 2023
 Return-Path: <SRS0=pMZs=57=smtp-tls-reporting.bounces.google.com=3Nd3cYxoKAIgz03q1xA-4y51-5x4-3q1035uzss00sxq.o0y@blogreen.org>
 X-Original-To: romain@blogreen.org
 Delivered-To: romain@blogreen.org

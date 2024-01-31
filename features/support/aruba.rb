@@ -19,7 +19,6 @@ BeforeAll do
   $server = WEBrick::HTTPServer.new(server_options)
   Thread.new { $server.start }
   Timeout.timeout(1) { sleep(0.1) until started }
-  puts 'go'
 end
 
 AfterAll do
