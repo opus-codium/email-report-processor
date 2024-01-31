@@ -19,6 +19,29 @@ options = {
   },
 }
 
+class Progress
+  def initialize(output: $stderr)
+    @output = output
+    @progress = 0
+  end
+
+  def step
+    @progress += 1
+    if (@progress % 10).zero?
+      @output.write(@progress)
+    elsif @progress.even?
+      @output.write('.')
+    end
+
+    @output.flush
+  end
+
+  def terminate
+    @output.write("\n") if @progress >= 2
+    @progress = 0
+  end
+end
+
 OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
   opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
   opts.separator("\nReport type selection:")
@@ -78,22 +101,27 @@ if ARGV.empty?
   mail = Mail.new($stdin.read)
   processor.process_message(mail)
 else
+  p = Progress.new
   ARGV.each do |filename|
     if options[:mbox]
       m = EmailReportProcessor::MailBox.new(filename)
 
       while (mail = m.next_message)
         processor.process_message(mail)
+        p.step
       end
     elsif options[:maildir]
       m = EmailReportProcessor::MailDir.new(filename)
 
       while (mail = m.next_message)
         processor.process_message(mail)
+        p.step
       end
     else
       mail = Mail.new(File.read(filename))
       processor.process_message(mail)
+      p.step
     end
   end
+  p.terminate
 end
