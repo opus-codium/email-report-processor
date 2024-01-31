@@ -1,5 +1,3 @@
-From SRS0=XBdr=6A=google.com=noreply-dmarc-support@example.com Sat Feb  4 13:46:24 2023
->From SRS0=XBdr=6A=google.com=noreply-dmarc-support@example.com  Sat Feb  4 13:46:24 2023
 Return-Path: <SRS0=XBdr=6A=google.com=noreply-dmarc-support@example.com>
 X-Original-To: romain@blogreen.org
 Delivered-To: romain@blogreen.org

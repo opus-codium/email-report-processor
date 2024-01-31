@@ -6,12 +6,13 @@ require 'email_report_processor'
 require 'optparse'
 
 options = {
-  class: nil,
-  mbox:  false,
-  os:    {},
+  class:   nil,
+  mbox:    false,
+  maildir: false,
+  os:      {},
 }
 
-OptionParser.new do |opts|
+OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
   opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
   opts.separator("\nReport type selection:")
   opts.on('--dmarc', 'Process DMARC Reports') do
@@ -35,13 +36,21 @@ OptionParser.new do |opts|
   end
 
   opts.separator("\nMiscellaneous options:")
-  opts.on('--mbox', 'Treat the provided file as a mailbox') do
+  opts.on('--mbox', 'Treat the provided files as Mbox') do
     options[:mbox] = true
+  end
+  opts.on('--maildir', 'Treat the provided files as Maildir') do
+    options[:maildir] = true
   end
 end.parse!
 
 if options[:class].nil?
   warn('A processor type must be passed')
+  exit 1
+end
+
+if options[:mbox] && options[:maildir]
+  warn('The --mbox and --maildir options are mutualy exclusive')
   exit 1
 end
 
@@ -55,8 +64,13 @@ else
     if options[:mbox]
       m = EmailReportProcessor::MailBox.new(filename)
 
-      while (message = m.next_message)
-        mail = Mail.new(message)
+      while (mail = m.next_message)
+        processor.process_message(mail)
+      end
+    elsif options[:maildir]
+      m = EmailReportProcessor::MailDir.new(filename)
+
+      while (mail = m.next_message)
         processor.process_message(mail)
       end
     else

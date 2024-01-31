@@ -29,7 +29,7 @@ module EmailReportProcessor
       if message.empty?
         nil
       else
-        message
+        Mail.new(message)
       end
     end
     # rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity
