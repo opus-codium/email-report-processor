@@ -3,43 +3,54 @@
 
 require 'email_report_processor'
 
+require 'opensearch'
+require 'faraday/net_http_persistent'
+
 require 'optparse'
 
 options = {
   class:   nil,
   mbox:    false,
   maildir: false,
-  os:      {},
+  os:      {
+    host:     'https://localhost:9200',
+    username: 'admin',
+    password: 'admin',
+  },
 }
 
 OptionParser.new do |opts| # rubocop:disable Metrics/BlockLength
   opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
   opts.separator("\nReport type selection:")
-  opts.on('--dmarc', 'Process DMARC Reports') do
+  opts.on('-d', '--dmarc', 'Process DMARC Reports') do
     options[:class] = EmailReportProcessor::DmarcRua
   end
-  opts.on('--tlsrpt', 'Process SMTP TLS Reports') do
+  opts.on('-t', '--tlsrpt', 'Process SMTP TLS Reports') do
     options[:class] = EmailReportProcessor::TlsrptRua
   end
+
   opts.separator("\nOpenSearch options:")
-  opts.on('-h', '--os-hostname=HOSTNAME', 'Hostname of the OpenSearch instance') do |hostname|
-    options[:os][:hostname] = hostname
-  end
-  opts.on('-p', '--os-port=PORT', 'Port of the OpenSearch instance') do |port|
-    options[:os][:port] = port.to_i
+  opts.on('-h', '--os-host=HOSTNAME', 'Hostname of the OpenSearch instance') do |host|
+    options[:os][:host] = host
   end
   opts.on('-u', '--os-username=USERNAME', 'Username of the OpenSearch instance') do |username|
     options[:os][:username] = username
   end
-  opts.on('--os-password=PASSWORD', 'Password of the OpenSearch instance') do |password|
+  opts.on('-p', '--os-password=PASSWORD', 'Password of the OpenSearch instance') do |password|
     options[:os][:password] = password
+  end
+  opts.on('--dmarc-index=INDEX', 'OpenSearch index of DMARC reports') do |index|
+    options[:dmarc_index] = index
+  end
+  opts.on('--tlsrpt-index=INDEX', 'OpenSearch index of SMTP TLS reports') do |index|
+    options[:tlsrpt_index] = index
   end
 
   opts.separator("\nMiscellaneous options:")
-  opts.on('--mbox', 'Treat the provided files as Mbox') do
+  opts.on('-b', '--mbox', 'Treat the provided files as Mbox') do
     options[:mbox] = true
   end
-  opts.on('--maildir', 'Treat the provided files as Maildir') do
+  opts.on('-d', '--maildir', 'Treat the provided files as Maildir') do
     options[:maildir] = true
   end
 end.parse!
@@ -54,7 +65,14 @@ if options[:mbox] && options[:maildir]
   exit 1
 end
 
-processor = options[:class].new(**options[:os])
+client = OpenSearch::Client.new(
+  host:              options[:os][:host],
+  user:              options[:os][:username],
+  password:          options[:os][:password],
+  transport_options: { ssl: { verify: false } },
+)
+
+processor = options[:class].new(client: client, options: options)
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)

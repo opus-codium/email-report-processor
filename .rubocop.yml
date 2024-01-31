@@ -12,7 +12,7 @@ Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 160
 
 Style/Documentation:

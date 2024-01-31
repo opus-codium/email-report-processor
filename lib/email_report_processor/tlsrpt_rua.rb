@@ -6,10 +6,11 @@ require 'json'
 
 module EmailReportProcessor
   class TlsrptRua < Base
-    DEFAULT_ENDPOINT = '/tlsrpt-reports'
+    DEFAULT_INDEX = 'tlsrpt-reports'
 
-    def initialize(**options)
-      super(**options, endpoint: options[:tlsrpt_endpoint] || DEFAULT_ENDPOINT)
+    def initialize(client:, options: {})
+      @index_name = options[:tlsrpt_index] || DEFAULT_INDEX
+      super(client: client)
     end
 
     def report(raw_report)
@@ -18,7 +19,7 @@ module EmailReportProcessor
       report['policies'].each do |policy|
         report['policies'] = policy
 
-        send_report(report.to_json)
+        send_report(report)
       end
     end
   end
