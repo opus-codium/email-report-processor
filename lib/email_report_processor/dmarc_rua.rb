@@ -66,13 +66,16 @@ module EmailReportProcessor
     def report(raw_report)
       report = Hash.from_xml(raw_report)
 
-      report['feedback']['record'] = [report['feedback']['record']] unless report['feedback']['record'].is_a?(Array)
-
-      report['feedback']['record'].each do |record|
-        report['feedback']['record'] = record.to_h
+      report_records(report).each do |record|
+        record['auth_results']['dkim'] = [record['auth_results']['dkim']].flatten.each_with_index.to_a.to_h(&:reverse)
+        report['feedback']['record'] = record
 
         send_report(report)
       end
+    end
+
+    def report_records(report)
+      [report['feedback']['record']].flatten.map(&:to_h)
     end
   end
 end
