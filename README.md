@@ -31,59 +31,6 @@ Setup the e-mail address to send aggregate reports using the `rua` field of the 
 _dmarc.<domain>. 10800	IN      TXT "v=DMARC1; rua=mailto:dmarc-rua@<domain>;"
 ```
 
-In OpenSearch, setup the `dmarc-reports` index with the following mappings:
-
-```
-PUT /dmarc-reports
-{
-  "mappings": {
-    "properties": {
-      "feedback": {
-        "properties": {
-          "report_metadata": {
-            "properties": {
-              "date_range": {
-                "properties": {
-                  "begin": {
-                    "type": "date",
-                    "format": "epoch_second"
-                  },
-                  "end": {
-                    "type": "date",
-                    "format": "epoch_second"
-                  }
-                }
-              }
-            }
-          },
-          "policy_published": {
-            "properties": {
-              "pct": {
-                "type": "integer"
-              }
-            }
-          },
-          "record": {
-            "properties": {
-              "row": {
-                "properties": {
-                  "source_ip": {
-                    "type": "ip"
-                  },
-                  "count": {
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
 ### SMTP TLS Reporting
 
 SMTP TLS reports are defined in [RFC8460](https://datatracker.ietf.org/doc/html/rfc8460).
@@ -95,28 +42,4 @@ Configure the e-mail address to send reports to using the `rua` field of the SMT
 
 ```
 _smtp._tls.<domain>. 10800	IN	TXT	"v=TLSRPTv1; rua=mailto:smtl-tls-rua@<domain>"
-```
-
-In OpenSearch, setup the `tls-reports` index with the following mappings:
-
-```
-PUT /tls-reports
-{
-  "mappings": {
-    "properties": {
-      "date-range": {
-        "properties": {
-          "start-datetime": {
-            "type": "date",
-            "format": "date_time_no_millis"
-          },
-          "end-datetime": {
-            "type": "date",
-            "format": "date_time_no_millis"
-          }
-        }
-      }
-    }
-  }
-}
 ```

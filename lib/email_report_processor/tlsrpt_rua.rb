@@ -13,6 +13,25 @@ module EmailReportProcessor
       super(client: client)
     end
 
+    def index_mappings # rubocop:disable Metrics/MethodLength
+      {
+        properties: {
+          'date-range': {
+            properties: {
+              'start-datetime': {
+                type:   'date',
+                format: 'date_time_no_millis',
+              },
+              'end-datetime':   {
+                type:   'date',
+                format: 'date_time_no_millis',
+              },
+            },
+          },
+        },
+      }
+    end
+
     def report(raw_report)
       report = JSON.parse(raw_report)
 

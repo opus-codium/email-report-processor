@@ -12,6 +12,7 @@ module EmailReportProcessor
 
     def initialize(client:)
       @client = client
+      @index_exist = nil
     end
 
     def report(_report)
@@ -19,7 +20,22 @@ module EmailReportProcessor
     end
 
     def send_report(report)
+      create_index unless index_exist?
+
       @client.index(index: index_name, body: report)
+    end
+
+    def index_exist?
+      @index_exist ||= @client.indices.exists?(index: index_name)
+    end
+
+    def create_index
+      @client.indices.create(
+        index: index_name,
+        body:  {
+          mappings: index_mappings,
+        },
+      )
     end
 
     def process_message(mail)

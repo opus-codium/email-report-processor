@@ -36,10 +36,18 @@ class TestWebserver < Sinatra::Base
     DATA
   end
 
+  head '/dmarc-reports' do
+    200
+  end
+
   post '/dmarc-reports/_doc' do
     halt 201, { 'Content-Type' => 'application/json' }, <<~DATA
       {"_index": "dmarc-reports", "_id": "abcdefghijklmnopqrst", "_version": 1, "result": "created", "_shards": {"total": 2, "successful": 1, "failed": 0}, "_seq_no": 199, "_primary_term": 2}
     DATA
+  end
+
+  head '/tlsrpt-reports' do
+    200
   end
 
   post '/tlsrpt-reports/_doc' do
