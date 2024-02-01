@@ -18,7 +18,7 @@ module EmailReportProcessor
         elsif @scanner.scan("\nFrom ")
           @scanner.unscan
           @scanner.getch
-          return message
+          return Mail.new(message)
         elsif @scanner.scan(/>From.*\n/)
           message += @scanner.matched[1..]
         elsif @scanner.scan(/.*\n/)
