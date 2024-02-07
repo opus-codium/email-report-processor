@@ -40,7 +40,10 @@ module EmailReportProcessor
 
     def process_message(mail)
       part = mail.attachments.first || mail
-      filename = part['Content-Disposition'].filename
+      content_disposition = part['Content-Disposition']
+      return nil unless content_disposition
+
+      filename = content_disposition.filename
 
       process_attachment(filename, part.body.decoded)
     end

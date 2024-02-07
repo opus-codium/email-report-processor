@@ -112,3 +112,11 @@ else
   end
   p.terminate
 end
+
+unless processor.errors.empty?
+  warn "The following #{processor.errors.count} message(s) count not be processed:"
+  processor.errors.each do |error|
+    warn "  - #{error.message_id} (#{error.subject})"
+  end
+  exit 1
+end
