@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
 class ReportProcessor
+  attr_reader :errors
+
   def initialize(client:, options:)
     @processors = [
       EmailReportProcessor::DmarcRua.new(client: client, options: options),
       EmailReportProcessor::TlsrptRua.new(client: client, options: options),
     ]
+    @errors = []
   end
 
   def process_message(mail)
     processed = false
 
     @processors.each do |processor|
-      processor.process_message(mail)
-      processed = true
-    rescue REXML::ParseException, JSON::ParserError
+      processed ||= processor.process_message(mail)
+    rescue RuntimeError
       # ignore
     end
 
-    return if processed
-
-    raise "No processor for report with Message-Id #{mail.message_id}"
+    @errors << mail unless processed
   end
 end
