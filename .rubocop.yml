@@ -36,5 +36,13 @@ RSpec/MultipleMemoizedHelpers:
 Metrics/ClassLength:
   Max: 200
 
+RSpec/FilePath:
+  CustomTransform:
+    MBox: mbox
+
+RSpec/SpecFilePathFormat:
+  CustomTransform:
+    MBox: mbox
+
 RSpec/SubjectStub:
   Enabled: false

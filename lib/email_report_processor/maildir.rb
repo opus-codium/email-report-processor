@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'mail'
+
 module EmailReportProcessor
   class MailDir
     def initialize(filename)
