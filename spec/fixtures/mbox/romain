@@ -1,0 +1,307 @@
+From romain@localhost  Fri Jul 15 14:25:00 2022
+Return-Path: <romain@localhost>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 1001)
+	id CE4B388F8; Fri, 15 Jul 2022 14:25:00 -1000 (-10)
+Date: Fri, 15 Jul 2022 14:25:00 -1000 (TAHT)
+From: romain@localhost
+To: romain@localhost
+Message-ID: <DCNfW29K7Nvss6skTW4BIw.1657931100815@postal.zappy.blogreen.org>
+Subject: Riemann daily alert reminder: 1 critical; 3 warning
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 1354
+Lines: 53
+
+# cpu critical
+
+cpu critical on zappy.blogreen.org (0.14763779527559054):
+---------------------------------- 8< ----------------------------------
+14.76% user+nice+sytem+interrupt
+
+ %CPU   PID COMMAND
+365,5    11 idle
+ 14,9    12 intr
+  5,4  3328 firefox
+  5,7  1845 pulseaudio
+  5,7    15 usb
+  3,2  2157 firefox
+  3,2 19109 audacious
+  1,1 30623 java
+  1,0  1963 firefox
+  0,0 24369 ruby30
+---------------------------------- 8< ----------------------------------
+
+
+
+# cpu warning
+
+cpu warning on ns399234.vpscorlu.com (0.13588026782197715):
+---------------------------------- 8< ----------------------------------
+13.59% user+nice+sytem+interrupt
+
+ %CPU   PID COMMAND
+365,7    11 idle
+ 13,7    12 intr
+  6,0  1845 pulseaudio
+  5,6    15 usb
+  5,2  3328 firefox
+  3,5  2157 firefox
+  2,9 19109 audacious
+  1,0 30623 java
+  0,0 30808 ps
+  0,0 24369 ruby30
+---------------------------------- 8< ----------------------------------
+
+
+
+# uptime warning
+
+uptime warning on zappy.blogreen.org (28800.0):
+---------------------------------- 8< ----------------------------------
+ 8:00
+---------------------------------- 8< ----------------------------------
+
+uptime warning on ns399234.vpscorlu.com (28800.0):
+---------------------------------- 8< ----------------------------------
+ 8:00
+---------------------------------- 8< ----------------------------------
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:53 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id CCF87D977E; Mon, 10 Apr 2023 10:43:53 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:53 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <ns5tIG5MBkWQ09c1ddq1g.1681159433814@postal.zappy.blogreen.org>
+Subject: TESTING n1 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:53 CEST 2023
+TESTING n1 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+0
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:53 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id D8A49D97CE; Mon, 10 Apr 2023 10:43:53 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:53 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <GoflqD5vGUy6nGKc2nA.1681159433867@postal.zappy.blogreen.org>
+Subject: TESTING n1 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:53 CEST 2023
+TESTING n1 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+1
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:53 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id DFB36D9A01; Mon, 10 Apr 2023 10:43:53 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:53 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <BXb8TZaOvBav2m1waVA.1681159433893@postal.zappy.blogreen.org>
+Subject: TESTING n1 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:53 CEST 2023
+TESTING n1 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+2
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:53 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id E8254D97D2; Mon, 10 Apr 2023 10:43:53 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:53 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <dzTEw9VY4QOSLgrcjLm0VA.1681159433933@postal.zappy.blogreen.org>
+Subject: TESTING n2 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:53 CEST 2023
+TESTING n2 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+0
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:53 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id EEEDBD99DB; Mon, 10 Apr 2023 10:43:53 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:53 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <iYZAdZSoBTiQI7Aiqrdhgw.1681159433957@postal.zappy.blogreen.org>
+Subject: TESTING n2 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:53 CEST 2023
+TESTING n2 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+1
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:54 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id 015CAD99E4; Mon, 10 Apr 2023 10:43:53 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:53 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <xcNRe6yTdLXEDwFWL5jqQ.1681159433983@postal.zappy.blogreen.org>
+Subject: TESTING n2 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:53 CEST 2023
+TESTING n2 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+2
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:54 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id 09688D99E6; Mon, 10 Apr 2023 10:43:54 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:54 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <YevrGWJq4CBrtEPEvAbSw.1681159434018@postal.zappy.blogreen.org>
+Subject: TESTING n3 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:54 CEST 2023
+TESTING n3 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+0
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:54 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id 0F3A0D97D7; Mon, 10 Apr 2023 10:43:54 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:54 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <fVoKNTNGKKz3T4lwKJwQ.1681159434043@postal.zappy.blogreen.org>
+Subject: TESTING n3 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:54 CEST 2023
+TESTING n3 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+1
+
+From riemann@zappy.blogreen.org  Mon Apr 10 10:43:54 2023
+Return-Path: <riemann@zappy.blogreen.org>
+X-Original-To: romain@localhost
+Delivered-To: romain@localhost
+Received: by zappy.blogreen.org (Postfix, from userid 908)
+	id 14E25D99E9; Mon, 10 Apr 2023 10:43:54 -1000 (-10)
+Date: Mon, 10 Apr 2023 22:43:54 +0200 (CEST)
+From: riemann@zappy.blogreen.org
+To: romain@localhost
+Message-ID: <4iP5rHplkqZlr1g13j47Qg.1681159434067@postal.zappy.blogreen.org>
+Subject: TESTING n3 critical
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+User-Agent: postal/2.0.2
+Status: RO
+Content-Length: 101
+Lines: 6
+
+At Mon Apr 10 22:43:54 CEST 2023
+TESTING n3 critical ()
+Tags: [dummy_alert]
+Custom Attributes: {}
+
+2
+
