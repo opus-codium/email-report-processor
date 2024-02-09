@@ -6,16 +6,14 @@ require 'email_report_processor'
 require 'opensearch'
 require 'faraday/net_http_persistent'
 
+require 'openssl'
 require 'optparse'
 
 options = {
-  mbox:    false,
-  maildir: false,
-  os:      {
-    host:     'https://localhost:9200',
-    username: 'admin',
-    password: 'admin',
-  },
+  host:              URI('https://admin:admin@localhost:9200'),
+  transport_options: { ssl: {} },
+  mbox:              false,
+  maildir:           false,
 }
 
 class Progress
@@ -41,18 +39,25 @@ class Progress
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 OptionParser.new do |opts|
   opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
 
   opts.separator("\nOpenSearch options:")
-  opts.on('-h', '--os-host=HOSTNAME', 'Hostname of the OpenSearch instance') do |host|
-    options[:os][:host] = host
+  opts.on('-u', '--url=URL', 'URL of the OpenSearch instance') do |url|
+    options[:host] = URI(url)
   end
-  opts.on('-u', '--os-username=USERNAME', 'Username of the OpenSearch instance') do |username|
-    options[:os][:username] = username
+  opts.on('--cacert=CERTIFICATE', 'Verify certificate against the provided CERTIFICATE') do |file|
+    options[:transport_options][:ssl][:ca_file] = file
   end
-  opts.on('-p', '--os-password=PASSWORD', 'Password of the OpenSearch instance') do |password|
-    options[:os][:password] = password
+  opts.on('--cert=CERTIFICATE', 'Use the provided CERTIFICATE for TLS client authentication') do |file|
+    options[:transport_options][:ssl][:client_cert] = OpenSSL::X509::Certificate.new(File.read(file))
+  end
+  opts.on('--key=KEY', 'Use the provided KEY for TLS client authentication') do |file|
+    options[:transport_options][:ssl][:client_key] = OpenSSL::PKey.read(File.read(file))
+  end
+  opts.on('-k', '--insecure', 'Skip certificate verification against trust store') do
+    options[:transport_options][:ssl][:verify] = false
   end
   opts.on('--dmarc-index=INDEX', 'OpenSearch index of DMARC reports') do |index|
     options[:dmarc_index] = index
@@ -74,12 +79,11 @@ if options[:mbox] && options[:maildir]
   warn('The --mbox and --maildir options are mutualy exclusive')
   exit 1
 end
+# rubocop:enable Metrics/BlockLength
 
 client = OpenSearch::Client.new(
-  host:              options[:os][:host],
-  user:              options[:os][:username],
-  password:          options[:os][:password],
-  transport_options: { ssl: { verify: false } },
+  host:              options[:host],
+  transport_options: options[:transport_options],
 )
 
 processor = ReportProcessor.new(client: client, options: options)
