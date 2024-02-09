@@ -95,7 +95,7 @@ else
   p = Progress.new
   ARGV.each do |filename|
     if options[:mbox]
-      m = EmailReportProcessor::MBox.new(filename)
+      m = EmailReportProcessor::Mbox.new(filename)
 
       while (mail = m.next_message)
         processor.process_message(mail)

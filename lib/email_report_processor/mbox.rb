@@ -3,7 +3,7 @@
 require 'mail'
 
 module EmailReportProcessor
-  class MBox
+  class Mbox
     def initialize(filename)
       @io = File.open(filename)
       @current_message = ''
