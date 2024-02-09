@@ -67,7 +67,7 @@ module EmailReportProcessor
       report = Hash.from_xml(raw_report)
 
       report_records(report).each do |record|
-        record['auth_results']['dkim'] = [record['auth_results']['dkim']].flatten.each_with_index.to_a.to_h(&:reverse)
+        flatten_record_dkim_auth_results(record) if record['auth_results']['dkim']
         report['feedback']['record'] = record
 
         send_report(report)
@@ -76,6 +76,10 @@ module EmailReportProcessor
 
     def report_records(report)
       [report['feedback']['record']].flatten.map(&:to_h)
+    end
+
+    def flatten_record_dkim_auth_results(record)
+      record['auth_results']['dkim'] = [record['auth_results']['dkim']].flatten.each_with_index.to_a.to_h(&:reverse)
     end
   end
 end

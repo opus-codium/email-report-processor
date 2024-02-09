@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<feedback xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <version>1.0</version>
+  <report_metadata>
+    <org_name>Enterprise Outlook</org_name>
+    <email>dmarcreport@microsoft.com</email>
+    <report_id>76a4511632d34eb99e944bfa59537f71</report_id>
+    <date_range>
+      <begin>1706572800</begin>
+      <end>1706659200</end>
+    </date_range>
+  </report_metadata>
+  <policy_published>
+    <domain>blogreen.org</domain>
+    <adkim>r</adkim>
+    <aspf>r</aspf>
+    <p>reject</p>
+    <sp>reject</sp>
+    <pct>100</pct>
+    <fo>1</fo>
+  </policy_published>
+  <record>
+    <row>
+      <source_ip>217.70.183.201</source_ip>
+      <count>1</count>
+      <policy_evaluated>
+        <disposition>reject</disposition>
+        <dkim>fail</dkim>
+        <spf>fail</spf>
+      </policy_evaluated>
+    </row>
+    <identifiers>
+      <envelope_to>example.com</envelope_to>
+      <envelope_from>blogreen.org</envelope_from>
+      <header_from>blogreen.org</header_from>
+    </identifiers>
+    <auth_results>
+      <spf>
+        <domain>blogreen.org</domain>
+        <scope>mfrom</scope>
+        <result>fail</result>
+      </spf>
+    </auth_results>
+  </record>
+</feedback>
