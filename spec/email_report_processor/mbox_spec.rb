@@ -2,7 +2,7 @@
 
 require 'email_report_processor/mbox'
 
-RSpec.describe EmailReportProcessor::MBox do
+RSpec.describe EmailReportProcessor::Mbox do
   subject(:mbox) { described_class.new('spec/fixtures/mbox/romain') }
 
   describe '#next' do
