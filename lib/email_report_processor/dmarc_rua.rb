@@ -65,6 +65,8 @@ module EmailReportProcessor
 
     def report(raw_report)
       report = Hash.from_xml(raw_report)
+      report['feedback'].delete('xmlns:xsd')
+      report['feedback'].delete('xmlns:xsi')
 
       report_records(report).each do |record|
         flatten_record_dkim_auth_results(record) if record['auth_results']['dkim']
