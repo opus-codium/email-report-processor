@@ -12,6 +12,7 @@ module EmailReportProcessor
 
     def initialize(client:, options: {})
       @index_name = options[:dmarc_index] || DEFAULT_INDEX
+      @pipeline = options[:dmarc_pipeline]
       super(client: client)
     end
 

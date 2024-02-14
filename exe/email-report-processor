@@ -62,8 +62,14 @@ OptionParser.new do |opts|
   opts.on('--dmarc-index=INDEX', 'OpenSearch index of DMARC reports') do |index|
     options[:dmarc_index] = index
   end
+  opts.on('--dmarc-pipeline=PIPELINE', 'Ingest DMARC reports using the provided PIPELINE') do |pipeline|
+    options[:dmarc_pipeline] = pipeline
+  end
   opts.on('--tlsrpt-index=INDEX', 'OpenSearch index of SMTP TLS reports') do |index|
     options[:tlsrpt_index] = index
+  end
+  opts.on('--tlsrpt-pipeline=PIPELINE', 'Ingest SMTP TLS reports using the provided PIPELINE') do |pipeline|
+    options[:tlsrpt_pipeline] = pipeline
   end
 
   opts.separator("\nMiscellaneous options:")
