@@ -10,6 +10,7 @@ module EmailReportProcessor
 
     def initialize(client:, options: {})
       @index_name = options[:tlsrpt_index] || DEFAULT_INDEX
+      @pipeline = options[:tlsrpt_pipeline]
       super(client: client)
     end
 

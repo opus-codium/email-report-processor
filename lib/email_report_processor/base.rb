@@ -8,7 +8,7 @@ require 'zlib'
 
 module EmailReportProcessor
   class Base
-    attr_reader :index_name
+    attr_reader :index_name, :pipeline
 
     def initialize(client:)
       @client = client
@@ -22,7 +22,7 @@ module EmailReportProcessor
     def send_report(report)
       create_index unless index_exist?
 
-      @client.index(index: index_name, body: report)
+      @client.index(index: index_name, pipeline: pipeline, body: report)
     end
 
     def index_exist?
