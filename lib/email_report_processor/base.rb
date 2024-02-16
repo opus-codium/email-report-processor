@@ -22,7 +22,10 @@ module EmailReportProcessor
     def send_report(report)
       create_index unless index_exist?
 
-      @client.index(index: index_name, pipeline: pipeline, body: report)
+      params = { index: index_name, body: report }
+      params[:pipeline] = pipeline if pipeline
+
+      @client.index(params)
     end
 
     def index_exist?
