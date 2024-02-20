@@ -92,11 +92,12 @@ client = OpenSearch::Client.new(
   transport_options: options[:transport_options],
 )
 
-processor = ReportProcessor.new(client: client, options: options)
+message_reader = EmailReportProcessor::MessageReader.new
+report_processor = EmailReportProcessor::ReportProcessor.new(client: client, options: options)
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)
-  processor.process_message(mail)
+  report_processor.send_report(message_reader.process_message(mail))
 else
   p = Progress.new
   ARGV.each do |filename|
@@ -104,28 +105,28 @@ else
       m = EmailReportProcessor::Mbox.new(filename)
 
       while (mail = m.next_message)
-        processor.process_message(mail)
+        report_processor.send_report(message_reader.process_message(mail))
         p.step
       end
     elsif options[:maildir]
       m = EmailReportProcessor::MailDir.new(filename)
 
       while (mail = m.next_message)
-        processor.process_message(mail)
+        report_processor.send_report(message_reader.process_message(mail))
         p.step
       end
     else
       mail = Mail.new(File.read(filename))
-      processor.process_message(mail)
+      report_processor.send_report(message_reader.process_message(mail))
       p.step
     end
   end
   p.terminate
 end
 
-unless processor.errors.empty?
-  warn "The following #{processor.errors.count} message(s) count not be processed:"
-  processor.errors.each do |error|
+unless message_reader.errors.empty?
+  warn "The following #{message_reader.errors.count} message(s) count not be processed:"
+  message_reader.errors.each do |error|
     warn "  - #{error.message_id} (#{error.subject})"
   end
   exit 1
