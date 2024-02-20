@@ -1,25 +1,24 @@
 # frozen_string_literal: true
 
-class ReportProcessor
-  attr_reader :errors
+require 'email_report_processor/processors/dmarc'
+require 'email_report_processor/processors/tlsrpt'
 
-  def initialize(client:, options:)
-    @processors = [
-      EmailReportProcessor::DmarcRua.new(client: client, options: options),
-      EmailReportProcessor::TlsrptRua.new(client: client, options: options),
-    ]
-    @errors = []
-  end
+module EmailReportProcessor
+  class ReportProcessor
+    attr_reader :errors
 
-  def process_message(mail)
-    processed = false
-
-    @processors.each do |processor|
-      processed ||= processor.process_message(mail)
-    rescue RuntimeError
-      # ignore
+    def initialize(client:, options:)
+      @dmarc_processor = Processors::Dmarc.new(client: client, options: options)
+      @tlsrpt_processor = Processors::Tlsrpt.new(client: client, options: options)
     end
 
-    @errors << mail unless processed
+    def send_report(message)
+      case message
+      when Reports::Dmarc
+        @dmarc_processor.send_report(message)
+      when Reports::Tlsrpt
+        @tlsrpt_processor.send_report(message)
+      end
+    end
   end
 end
