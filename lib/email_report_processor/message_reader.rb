@@ -24,7 +24,8 @@ module EmailReportProcessor
       raise 'Missing Content-Disposition header' unless content_disposition
 
       process_attachment(content_disposition.filename, part.body.decoded)
-    rescue StandardError
+    rescue StandardError => e
+      message['X-Email-Report-Processor-Error'] = e.message
       errors << message
       nil
     end

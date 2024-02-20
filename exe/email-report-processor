@@ -127,7 +127,7 @@ end
 unless message_reader.errors.empty?
   warn "The following #{message_reader.errors.count} message(s) count not be processed:"
   message_reader.errors.each do |error|
-    warn "  - #{error.message_id} (#{error.subject})"
+    warn "  - #{error.message_id} (#{error.subject}): #{error['X-Email-Report-Processor-Error']}"
   end
   exit 1
 end
