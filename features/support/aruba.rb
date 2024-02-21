@@ -40,6 +40,12 @@ class TestWebserver < Sinatra::Base
     200
   end
 
+  post '/dmarc-reports/_search' do
+    halt 200, { 'Content-Type' => 'application/json' }, <<~DATA
+      {"aggregations":{"report_ids":{"sum_other_doc_count": 0, "buckets": []}}}
+    DATA
+  end
+
   post '/dmarc-reports/_doc' do
     halt 201, { 'Content-Type' => 'application/json' }, <<~DATA
       {"_index": "dmarc-reports", "_id": "abcdefghijklmnopqrst", "_version": 1, "result": "created", "_shards": {"total": 2, "successful": 1, "failed": 0}, "_seq_no": 199, "_primary_term": 2}
@@ -48,6 +54,12 @@ class TestWebserver < Sinatra::Base
 
   head '/tlsrpt-reports' do
     200
+  end
+
+  post '/tlsrpt-reports/_search' do
+    halt 200, { 'Content-Type' => 'application/json' }, <<~DATA
+      {"aggregations":{"report_ids":{"sum_other_doc_count": 0, "buckets": []}}}
+    DATA
   end
 
   post '/tlsrpt-reports/_doc' do

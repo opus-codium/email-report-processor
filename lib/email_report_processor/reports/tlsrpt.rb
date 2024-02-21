@@ -10,6 +10,10 @@ module EmailReportProcessor
         @policies = @report.delete('policies')
       end
 
+      def report_id
+        @report['report-id']
+      end
+
       def parts
         @policies.map do |policy|
           @report.merge({ 'policies' => policy })

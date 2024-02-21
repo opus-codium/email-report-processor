@@ -10,7 +10,10 @@ module EmailReportProcessor
       def initialize(client:, options: {})
         @index_name = options[:dmarc_index] || DEFAULT_INDEX
         @pipeline = options[:dmarc_pipeline]
-        super(client: client)
+
+        @date_range_field = 'feedback.report_metadata.date_range.begin'
+        @report_id_field = 'feedback.report_metadata.report_id'
+        super
       end
 
       def index_mappings # rubocop:disable Metrics/MethodLength
