@@ -14,6 +14,9 @@ options = {
   transport_options: { ssl: {} },
   mbox:              false,
   maildir:           false,
+  deduplicate_since: 'now-7d/d',
+  deduplicate_until: 'now',
+  deduplicate_count: 100,
 }
 
 class Progress
@@ -70,6 +73,17 @@ OptionParser.new do |opts|
   end
   opts.on('--tlsrpt-pipeline=PIPELINE', 'Ingest SMTP TLS reports using the provided PIPELINE') do |pipeline|
     options[:tlsrpt_pipeline] = pipeline
+  end
+
+  opts.separator("\nDeduplication options:")
+  opts.on('--dedup-since=SINCE', 'Deduplicate reports since (e.g. "now-1M")') do |dedup_since|
+    options[:deduplicate_since] = dedup_since
+  end
+  opts.on('--dedup-until=UNTIL', 'Deduplicate reports until (e.g. "now")') do |dedup_until|
+    options[:deduplicate_until] = dedup_until
+  end
+  opts.on('--dedup-count=COUNT', 'Find up to COUNT report ids in the deduplication interval') do |count|
+    options[:deduplicate_count] = count
   end
 
   opts.separator("\nMiscellaneous options:")

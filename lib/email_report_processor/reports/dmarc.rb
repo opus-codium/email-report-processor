@@ -17,6 +17,10 @@ module EmailReportProcessor
         @records = [@report['feedback'].delete('record')].flatten.map { |record| Dmarc::Record.new(record) }
       end
 
+      def report_id
+        @report['feedback']['report_metadata']['report_id']
+      end
+
       def parts
         @records.map do |record|
           report = Marshal.load(Marshal.dump(@report))

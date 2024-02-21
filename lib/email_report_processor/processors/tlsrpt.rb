@@ -10,7 +10,10 @@ module EmailReportProcessor
       def initialize(client:, options: {})
         @index_name = options[:tlsrpt_index] || DEFAULT_INDEX
         @pipeline = options[:tlsrpt_pipeline]
-        super(client: client)
+
+        @date_range_field = 'date-range.start-datetime'
+        @report_id_field = 'report-id'
+        super
       end
 
       def index_mappings # rubocop:disable Metrics/MethodLength
