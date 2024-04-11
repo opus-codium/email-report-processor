@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'mail'
-  spec.add_runtime_dependency 'opensearch-ruby'
+  spec.add_runtime_dependency 'opensearch-ruby-cli'
   spec.add_runtime_dependency 'rexml'
   spec.add_runtime_dependency 'rubyzip'
 end

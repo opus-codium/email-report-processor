@@ -3,15 +3,13 @@
 
 require 'email_report_processor'
 
-require 'opensearch'
+require 'opensearch/cli'
 require 'faraday/net_http_persistent'
 
 require 'openssl'
 require 'optparse'
 
 options = {
-  host:              URI('https://admin:admin@localhost:9200'),
-  transport_options: { ssl: {} },
   mbox:              false,
   maildir:           false,
   deduplicate_since: 'now-7d/d',
@@ -43,25 +41,11 @@ class Progress
 end
 
 # rubocop:disable Metrics/BlockLength
-OptionParser.new do |opts|
+cli = OpenSearch::CLI.new do |opts|
   opts.banner = "usage: #{$PROGRAM_NAME} [options] [file...]"
 
-  opts.separator("\nOpenSearch options:")
-  opts.on('-u', '--url=URL', 'URL of the OpenSearch instance') do |url|
-    options[:host] = URI(url)
-  end
-  opts.on('--cacert=CERTIFICATE', 'Verify certificate against the provided CERTIFICATE') do |file|
-    options[:transport_options][:ssl][:ca_file] = file
-  end
-  opts.on('--cert=CERTIFICATE', 'Use the provided CERTIFICATE for TLS client authentication') do |file|
-    options[:transport_options][:ssl][:client_cert] = OpenSSL::X509::Certificate.new(File.read(file))
-  end
-  opts.on('--key=KEY', 'Use the provided KEY for TLS client authentication') do |file|
-    options[:transport_options][:ssl][:client_key] = OpenSSL::PKey.read(File.read(file))
-  end
-  opts.on('-k', '--insecure', 'Skip certificate verification against trust store') do
-    options[:transport_options][:ssl][:verify] = false
-  end
+  opts.separator('')
+  opts.separator('Ingestion options:')
   opts.on('--dmarc-index=INDEX', 'OpenSearch index of DMARC reports') do |index|
     options[:dmarc_index] = index
   end
@@ -75,7 +59,8 @@ OptionParser.new do |opts|
     options[:tlsrpt_pipeline] = pipeline
   end
 
-  opts.separator("\nDeduplication options:")
+  opts.separator('')
+  opts.separator('Deduplication options:')
   opts.on('--dedup-since=SINCE', 'Deduplicate reports since (e.g. "now-1M")') do |dedup_since|
     options[:deduplicate_since] = dedup_since
   end
@@ -86,14 +71,18 @@ OptionParser.new do |opts|
     options[:deduplicate_count] = count
   end
 
-  opts.separator("\nMiscellaneous options:")
+  opts.separator('')
+  opts.separator('Miscellaneous options:')
   opts.on('-b', '--mbox', 'Treat the provided files as Mbox') do
     options[:mbox] = true
   end
   opts.on('-d', '--maildir', 'Treat the provided files as Maildir') do
     options[:maildir] = true
   end
-end.parse!
+end
+
+cli.load
+cli.parse!
 
 if options[:mbox] && options[:maildir]
   warn('The --mbox and --maildir options are mutualy exclusive')
@@ -101,13 +90,8 @@ if options[:mbox] && options[:maildir]
 end
 # rubocop:enable Metrics/BlockLength
 
-client = OpenSearch::Client.new(
-  host:              options[:host],
-  transport_options: options[:transport_options],
-)
-
 message_reader = EmailReportProcessor::MessageReader.new
-report_processor = EmailReportProcessor::ReportProcessor.new(client: client, options: options)
+report_processor = EmailReportProcessor::ReportProcessor.new(client: cli.client, options: options)
 
 if ARGV.empty?
   mail = Mail.new($stdin.read)
