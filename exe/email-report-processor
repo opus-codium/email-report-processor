@@ -81,6 +81,7 @@ cli = OpenSearch::CLI.new do |opts|
   end
 end
 
+cli.load
 cli.parse!
 
 if options[:mbox] && options[:maildir]
