@@ -29,9 +29,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'activesupport'
-  spec.add_runtime_dependency 'mail'
-  spec.add_runtime_dependency 'opensearch-ruby-cli'
-  spec.add_runtime_dependency 'rexml'
-  spec.add_runtime_dependency 'rubyzip'
+  spec.add_dependency 'activesupport'
+  spec.add_dependency 'mail'
+  spec.add_dependency 'opensearch-ruby-cli'
+  spec.add_dependency 'rexml'
+  spec.add_dependency 'rubyzip'
 end

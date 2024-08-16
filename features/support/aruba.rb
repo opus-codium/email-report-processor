@@ -4,10 +4,12 @@ require 'aruba/cucumber'
 
 begin
   require 'rackup/handler/webrick'
+  RACK_HANDLER = Rackup::Handler::WEBrick
 rescue LoadError
   # XXX: Needed for Ruby 2.6 compatibility
   # Moved to the rackup gem in recent versions
   require 'rack/handler/webrick'
+  RACK_HANDLER = Rack::Handler::WEBrick
 end
 require 'sinatra/base'
 require 'webrick'
@@ -81,7 +83,7 @@ BeforeAll do
     SSLCertName:   [%w[CN localhost]],
   }
   $server = WEBrick::HTTPServer.new(server_options)
-  $server.mount('/', Rack::Handler::WEBrick, TestWebserver)
+  $server.mount('/', RACK_HANDLER, TestWebserver)
   Thread.new { $server.start }
   Timeout.timeout(1) { sleep(0.1) until started }
 end
