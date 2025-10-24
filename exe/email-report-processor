@@ -6,6 +6,7 @@ require 'email_report_processor'
 require 'opensearch/cli'
 require 'faraday/net_http_persistent'
 
+require 'datemath'
 require 'openssl'
 require 'optparse'
 
@@ -93,6 +94,8 @@ end
 message_reader = EmailReportProcessor::MessageReader.new
 report_processor = EmailReportProcessor::ReportProcessor.new(client: cli.client, options: options)
 
+accepted_dates = Datemath::Parser.new(options[:deduplicate_since]).parse..Datemath::Parser.new(options[:deduplicate_until]).parse
+
 if ARGV.empty?
   mail = Mail.new($stdin.read)
   report_processor.send_report(message_reader.process_message(mail))
@@ -103,6 +106,8 @@ else
       m = EmailReportProcessor::Mbox.new(filename)
 
       while (mail = m.next_message)
+        next unless accepted_dates.cover?(mail.date)
+
         report_processor.send_report(message_reader.process_message(mail))
         p.step
       end
@@ -110,6 +115,8 @@ else
       m = EmailReportProcessor::MailDir.new(filename)
 
       while (mail = m.next_message)
+        next unless accepted_dates.cover?(mail.date)
+
         report_processor.send_report(message_reader.process_message(mail))
         p.step
       end

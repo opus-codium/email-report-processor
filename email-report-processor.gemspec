@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport'
+  spec.add_dependency 'datemath'
   spec.add_dependency 'mail'
   spec.add_dependency 'opensearch-ruby-cli'
   spec.add_dependency 'rexml'
